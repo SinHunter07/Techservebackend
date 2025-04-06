@@ -101,4 +101,4 @@ const deleteApplication = asyncHandler(async (req, res) => {
     );
 });
 
-export { getApplication, registerApplication, getAllApplications, updateApplication, deleteApplication };
+export { getApplication, registerApplication, getAllApplications, deleteApplication };
