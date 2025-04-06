@@ -1,15 +1,21 @@
 import { Router } from "express";
-import { getAmbassador , registerAmbassador } from "../controllers/ambassador.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import { registerAmbassador, getAmbassador } from "../controllers/ambassador.controller.js";
 
-const router = Router()
+const router = Router();
 
-router.route("/register").post(
-    upload.fields([
-        {
-        name: "profilePhoto",
-        maxcount: 1
-    }]), registerAmbassador
-)
+/**
+ * @route   POST /api/v1/ambassadors
+ * @desc    Register a new ambassador
+ * @access  Public
+ */
+router.post("/", upload.single("profilePhoto"), registerAmbassador);
 
-export default router
+/**
+ * @route   GET /api/v1/ambassadors/:id
+ * @desc    Get a single ambassador by ID
+ * @access  Public
+ */
+router.get("/:id", getAmbassador);
+
+export default router;

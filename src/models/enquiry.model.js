@@ -8,9 +8,8 @@ const enquirySchema = new Schema({
     },
     status: {
         type:String,
-        enum:["READ" , "UNREAD"],
+        enum:["READ","UNREAD"],
         default: "UNREAD"
-        
     },
     message: {
         type: String,
