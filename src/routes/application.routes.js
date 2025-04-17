@@ -9,7 +9,9 @@ import {
 
 const router = Router();
 
-router.post("/register", upload.single("cv"), registerApplication);
+router.post("/register", upload.fields([{ name : "cv" ,
+    maxCount: 1
+}]), registerApplication);
 
 router.get("/", getAllApplications);
 

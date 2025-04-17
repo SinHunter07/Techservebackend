@@ -5,7 +5,9 @@ import { registerAmbassador, getAmbassador } from "../controllers/ambassador.con
 const router = Router();
 
 
-router.post("/", upload.single("profilePhoto"), registerAmbassador);
+router.post("/", upload.fields( [{name : "profilePhoto",
+    maxCount : 1
+}]), registerAmbassador);
 
 router.get("/:id", getAmbassador);
 
