@@ -3,7 +3,7 @@ import { uploadOnCloudinary } from "../services/cloudinary.services.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-
+import mongoose from "mongoose";
 
 const registerAmbassador = asyncHandler(async (req ,res) => {
 
@@ -40,14 +40,24 @@ const registerAmbassador = asyncHandler(async (req ,res) => {
 const getAmbassador = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
+    // Check if ID is provided
+    if (!id) {
+        throw new ApiError(400, "Please provide an ambassador ID in the URL. Example: /api/v1/ambassadors/65f1234567890abcdef12345");
+    }
+
+    // Validate if the ID is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(400, "Invalid ambassador ID format. Please provide a valid MongoDB ID.");
+    }
+
     const ambassador = await Ambassador.findById(id);
 
     if (!ambassador) {
-        throw new ApiError(404, "Ambassador not found");
+        throw new ApiError(404, `No ambassador found with ID: ${id}`);
     }
 
     return res.status(200).json(
-        new ApiResponse(200, ambassador, "Ambassador retrieved successfully")
+        new ApiResponse(200, ambassador, "Ambassador found successfully")
     );
 })
 
