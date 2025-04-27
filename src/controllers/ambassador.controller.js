@@ -4,6 +4,7 @@ import { asyncHandler } from "../utils/AsyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
+
 const registerAmbassador = asyncHandler(async (req ,res) => {
 
     const{name , collegeName  , email ,about ,phone} = req.body
@@ -36,11 +37,26 @@ const registerAmbassador = asyncHandler(async (req ,res) => {
     )
 })
 
-const getAmbassador = asyncHandler(async (req,res) => {
-    const ambassador = req.ambassador
+const getAmbassador = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const ambassador = await Ambassador.findById(id);
+
+    if (!ambassador) {
+        throw new ApiError(404, "Ambassador not found");
+    }
+
     return res.status(200).json(
-        new ApiResponse(200,ambassador,"Ambassador found succefully")
-    )
+        new ApiResponse(200, ambassador, "Ambassador retrieved successfully")
+    );
 })
 
-export {registerAmbassador , getAmbassador};
+const getAllAmbassadors = asyncHandler(async (req, res) => {
+    const ambassadors = await Ambassador.find({});
+    
+    return res.status(200).json(
+        new ApiResponse(200, ambassadors, "All ambassadors fetched successfully")
+    );
+});
+
+export {registerAmbassador, getAmbassador, getAllAmbassadors};
